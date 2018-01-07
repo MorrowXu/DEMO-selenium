@@ -70,14 +70,14 @@ def autologin():
 
 	ic = dr.find_element_by_xpath('//*[@id="InCourse"]') # 重新对页面元素进行定位
 	ic.find_element_by_xpath('//*[@id="ctl00_ContentPlaceHolder1_\
-		StudentCourseList1_dlInCourse_ctl01_HyperLink3"]').click()   # \为续行符	
+		StudentCourseList1_dlInCourse_ctl01_HyperLink3"]').click()   # \为续行符
 
 	dr.find_element_by_xpath('//*[@id="ctl00_ContentPlaceHolder1_\
-		CourseIndex2_ctl01_dlCourseware_ctl01_HyperLink3"]').click() # \为续行符	
+		CourseIndex2_ctl01_dlCourseware_ctl01_HyperLink3"]').click() # \为续行符
 
 	# next: 解决窗口焦点句柄切换问题
 	all_handles = dr.window_handles # 获得所有窗口句柄
-	dr.switch_to_window(all_handles[-1]) # 切换窗口焦点句柄到最后一个页面	
+	dr.switch_to_window(all_handles[-1]) # 切换窗口焦点句柄到最后一个页面
 
 	# next: 解决弹出警报处理
 
