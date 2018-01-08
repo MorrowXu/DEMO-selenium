@@ -8,9 +8,9 @@ import time
 # import urllib
 import pytesseract
 if 'HTTP_PROXY' in os.environ: del os.environ['HTTP_PROXY'] # 取消http代理
-login_dict = {'url':'http://xueli.xjtudlc.com/login1.aspx',
-			  'username':'117093943010052',
-			  'password':'xuhaoran123ufo'}
+login_dict = {'url':'http://****/****',
+			  'username':'*****',
+			  'password':'*****'}
 
 
 def code_ocr(pic_filename):
