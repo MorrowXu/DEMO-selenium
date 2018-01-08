@@ -11,9 +11,9 @@ import sys
 reload(sys)
 sys.setdefaultencoding( "utf-8" )
 if 'HTTP_PROXY' in os.environ: del os.environ['HTTP_PROXY'] # 取消http代理
-login_dict = {'url':'http://***.***.com/***',
-			  'username':'****',
-			  'password':'----'}
+login_dict = {'url':'http://xueli.xjtudlc.com/login1.aspx',
+			  'username':'117093943010052',
+			  'password':'xuhaoran123ufo'}
 
 
 def code_ocr(pic_filename):
@@ -105,7 +105,7 @@ def autologin():
 	dr.switch_to_window(all_handles[-1]) # 切换窗口焦点句柄到最后一个页面
 	time.sleep(5)
 	dr.switch_to_alert().accept() # 接受弹出的对话框
-	time.sleep(25)
+	time.sleep(125)
 	# dr.find_element_by_xpath('/html/body/form/table/tbody/tr/td[1]/div/div[5]/div/table/tbody/tr[1]/td/ul/li[5]').click()
 	# time.sleep(2)
 	# dr.find_element_by_xpath('//*[@id="RateButton"]').click() # 给课程打分
@@ -114,10 +114,11 @@ def autologin():
 	time.sleep(2)
 	dr.switch_to_alert().accept() # 接受弹出的对话框
 	time.sleep(5)
-	# from selenium.webdriver.common.keys import Keys
-	# from selenium.webdriver.common.action_chains import ActionChains
-	# ActionChains(dr).key_down(Keys.CONTROL).send_keys('w')
+	dr.get('http://www.baidu.com') # 清空页面,避免还有数据出现关不了浏览器的情况
+	dr.switch_to_alert().accept()
+	print 'its worked'
 	time.sleep(2)
+	# dr.close()
 	dr.quit()
 
 if __name__ == '__main__':
