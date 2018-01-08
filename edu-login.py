@@ -8,7 +8,7 @@ import time
 # import urllib
 import pytesseract
 if 'HTTP_PROXY' in os.environ: del os.environ['HTTP_PROXY'] # 取消http代理
-login_dict = {'url':'http://****/****',
+login_dict = {'url':'http://********/***',
 			  'username':'*****',
 			  'password':'*****'}
 
