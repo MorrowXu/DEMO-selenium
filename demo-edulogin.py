@@ -127,8 +127,8 @@ def autologin():
 		print '播放页面 alert多弹了一个窗口'
 	except Exception as e:
 		print '播放页面 alert弹出正常'
-	time.sleep(time_length) # 按视频时长等待
 	print '课程视频播放开始'
+	time.sleep(time_length) # 按视频时长等待
 
 	# --------------------课程打分--------------------------
 	dr.find_element_by_xpath('/html/body/form/table/tbody/tr/td[1]/div/div[5]/div/table/tbody/tr[1]/td/ul/li[5]').click()
