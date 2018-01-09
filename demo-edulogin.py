@@ -106,23 +106,37 @@ def autologin():
 	wait.until(lambda dr: dr.find_element_by_xpath('/html/body/div[2]/form/table/tbody/tr/td[3]/div/div[2]/div[2]/div[1]/div[1]/p[2]/b/a').is_displayed())
 	course = dr.find_element_by_xpath('/html/body/div[2]/form/table/tbody/tr/td[3]/div/div[2]/div[2]/div[1]/div[2]/p[2]/b/a')
 									 # /html/body/div[2]/form/table/tbody/tr/td[3]/div/div[2]/div[2]/div[1]/div[1]/p[2]/b/a
+
+	# --------------------视频时长--------------------------
 	t = course.text[-8:] # 获取视频时长
 	t_lst = t.split(':')
-	time_length = int(t_lst[0]) * 60 * 60 + int(t_lst[1]) * 60 + int(t_lst[2]) + 30 # 获取的时间换算成秒+30秒的预留时间
-	print '视频时长: '+ t +' ,已设置关闭时间: ' + str(time_length) +'s'
+	time_length = int(t_lst[0]) * 60 * 60 + int(t_lst[1]) * 60 + int(t_lst[2]) + 20 # 获取的时间换算成秒+30秒的预留时间
+	print '视频时长: ' + t + ' ,已设置关闭时间: ' + str(time_length) + 's'
 	course.click()
-	time.sleep(3) # 弹出窗口加载等待
+	# --------------------视频时长--------------------------
+
+	time.sleep(5) # 弹出窗口加载等待
 	all_handles = dr.window_handles
 	print '目前所有窗口句柄:',all_handles
 	dr.switch_to_window(all_handles[-1]) # 切换窗口焦点句柄到最后一个页面
-	dr.switch_to_alert().accept() # 接受弹出的对话框
+	try:
+		# dr.find_element_by_xpath('/html/body/form/table/tbody/tr/td[1]/div/div[4]/input')
+		dr.switch_to_alert().accept() # 接受弹出的对话框
+		time.sleep(1)
+		dr.switch_to_alert().accept() # 有的网页会连续弹出2个alert警告框
+		print '播放页面 alert多弹了一个窗口'
+	except Exception as e:
+		print '播放页面 alert弹出正常'
 	time.sleep(time_length) # 按视频时长等待
+	print '课程视频播放开始'
+
 	# --------------------课程打分--------------------------
 	dr.find_element_by_xpath('/html/body/form/table/tbody/tr/td[1]/div/div[5]/div/table/tbody/tr[1]/td/ul/li[5]').click()
 	time.sleep(2)
 	button = dr.find_element_by_xpath('//*[@id="RateButton"]') # 给课程打分
 	ActionChains(dr).click(button).perform() # 为什么要用actionchains模拟鼠标左键点击呢,我也不知道,我直接定位元素click不行
 	# --------------------课程打分--------------------------
+	
 	dr.find_element_by_xpath('/html/body/form/table/tbody/tr/td[1]/div/div[4]/input').click()  # 结束
 	time.sleep(2)
 	dr.switch_to_alert().accept() # 接受弹出的对话框
