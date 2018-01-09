@@ -3,6 +3,7 @@
 # Author: Morrow
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.action_chains import ActionChains
 from PIL import Image,ImageEnhance
 import os
 import time
@@ -61,10 +62,10 @@ def autologin():
 		# pic_code = dr.find_element_by_xpath('//*[@id="VerifyCode"]')
 		# pic_link = pic_code.get_attribute('src')
 		# response = urllib.urlretrieve(pic_link,'yzm.jpg') # 网页上抓取验证码图片
-		pic_filename = 'C:\\Users\\Administrator\\Desktop\\screen_shot.png'
+		pic_filename = 'screen_shot.png'
 		dr.get_screenshot_as_file(pic_filename) # 截浏览器整图
 		img1 = Image.open(pic_filename)
-		box = (780,236,864,256)  # box(left, upper, right, lower)  firefox浏览器默认参数
+		box = (780,236,864,256)  # box(left, upper, right, lower)  firefox截图参数
 		# box = (664,234,744,256) # chrome截图参数
 		verifycode_pic = img1.crop(box)
 		verifycode_pic.save('verifycode.png')
@@ -76,7 +77,7 @@ def autologin():
 		time.sleep(1)
 		# ----------------------------------------------------------------
 
-		btnlogin = dr.find_element_by_id('lbtnLogin')
+		btnlogin = dr.find_element_by_id('lbtnLogin') # 登录
 		btnlogin.click()
 		try:
 			login_wait = WebDriverWait(dr, 3)
@@ -87,13 +88,14 @@ def autologin():
 			print '失败%d次,错误代码:' % error_num, e
 			error_num += 1
 			_alert = dr.switch_to_alert()
-			_alert.accept() # 如果登陆失败会循环再来一次
+			_alert.accept() # 如果登录失败会循环再来一次
 
 	w1 = dr.find_element_by_xpath('//*[@id="mainFrame"]') 
 	# 由于网页结构为frameset/frame,所以需要定位到该frame下,并switch_to.      frame需要切/frameset不需要切
 	dr.switch_to.frame(w1) # 切换到该frameset下	
 	ic = dr.find_element_by_xpath('//*[@id="InCourse"]') # 重新对页面元素进行定位
 	ic.find_element_by_xpath('//*[@id="ctl00_ContentPlaceHolder1_StudentCourseList1_dlInCourse_ctl02_HyperLink3"]').click()
+								     # ctl00_ContentPlaceHolder1_StudentCourseList1_dlInCourse_ctl03_HyperLink3
 	wait = WebDriverWait(dr, 15)
 	wait.until(lambda dr: dr.find_element_by_xpath('//*[@id="ctl00_ContentPlaceHolder1_CourseIndex2_ctl01_dlCourseware_ctl01_HyperLink3"]').is_displayed())
 	# time.sleep(1)
@@ -102,7 +104,7 @@ def autologin():
 	all_handles = dr.window_handles # 获得所有窗口句柄
 	dr.switch_to_window(all_handles[-1]) # 切换窗口焦点句柄到最后一个页面
 	wait.until(lambda dr: dr.find_element_by_xpath('/html/body/div[2]/form/table/tbody/tr/td[3]/div/div[2]/div[2]/div[1]/div[11]/p[2]/b/a').is_displayed())
-	dr.find_element_by_xpath('/html/body/div[2]/form/table/tbody/tr/td[3]/div/div[2]/div[2]/div[1]/div[11]/p[2]/b/a').click()
+	dr.find_element_by_xpath('/html/body/div[2]/form/table/tbody/tr/td[3]/div/div[2]/div[2]/div[1]/div[1]/p[2]/b/a').click()
 							# /html/body/div[2]/form/table/tbody/tr/td[3]/div/div[2]/div[2]/div[1]/div[1]/p[2]/b/a
 	time.sleep(3)
 	all_handles = dr.window_handles
@@ -110,20 +112,21 @@ def autologin():
 	dr.switch_to_window(all_handles[-1]) # 切换窗口焦点句柄到最后一个页面
 	dr.switch_to_alert().accept() # 接受弹出的对话框
 	time.sleep(25)
-	# dr.find_element_by_xpath('/html/body/form/table/tbody/tr/td[1]/div/div[5]/div/table/tbody/tr[1]/td/ul/li[5]').click()
-	# time.sleep(2)
-	# dr.find_element_by_xpath('//*[@id="RateButton"]').click() # 给课程打分
-	# time.sleep(5)
+	# --------------------课程打分--------------------------
+	dr.find_element_by_xpath('/html/body/form/table/tbody/tr/td[1]/div/div[5]/div/table/tbody/tr[1]/td/ul/li[5]').click()
+	time.sleep(2)
+	button = dr.find_element_by_xpath('//*[@id="RateButton"]') # 给课程打分
+	ActionChains(dr).click(button).perform() # 为什么要用actionchains模拟鼠标左键点击呢,我也不知道,我直接定位元素+click不行
+	# --------------------课程打分--------------------------
 	dr.find_element_by_xpath('/html/body/form/table/tbody/tr/td[1]/div/div[4]/input').click()  # 结束
 	time.sleep(2)
 	dr.switch_to_alert().accept() # 接受弹出的对话框
-	time.sleep(1)
+	time.sleep(2)
 	dr.get('http://www.baidu.com') # 清空页面,避免还有数据出现关不了浏览器的情况
 	dr.switch_to_alert().accept()
-	print '准备退出...'
 	time.sleep(2)
 	dr.close()
-	time.sleep(3)
+	time.sleep(5)
 	dr.quit()
 
 if __name__ == '__main__':
