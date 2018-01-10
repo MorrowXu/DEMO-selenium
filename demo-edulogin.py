@@ -19,6 +19,10 @@ url = s.split(' ')[0].split('@')[1] # 链接
 username = s.split(' ')[1].split('@')[1] # 账号
 password = s.split(' ')[2].split('@')[1] # 密码
 
+dr = webdriver.Firefox() # 启动浏览器
+# dr = webdriver.Chrome()
+# dr.set_window_size(700,550)
+dr.get(url)
 
 def code_ocr(pic_filename):
 	'''
@@ -41,10 +45,6 @@ def autologin():
 	'''
 		利用selenium中webdriver驱动启动浏览器
 	'''
-	dr = webdriver.Firefox()
-	# dr = webdriver.Chrome()
-	# dr.set_window_size(700,550)
-	dr.get(url)
 	error_num = 1
 
 	while True:
@@ -130,28 +130,46 @@ def autologin():
 	print '课程视频播放开始'
 	time.sleep(time_length) # 按视频时长等待
 
+	try: 
+		# 若播放视频时间不准确出现提前或/延后弹出alert,需将异常捕获
+		dr.switch_to_alert().accept() # 接受弹出的对话框
+		print '>>>视频已播完<<<'
+	except:
+		dr.find_element_by_xpath('/html/body/form/table/tbody/tr/td[1]/div/div[4]/input').click()  # 结束
+		dr.switch_to_alert().accept() # 接受弹出的对话框
+		print '>>>视频未播完<<<'
+
 	# --------------------课程打分--------------------------
 	dr.find_element_by_xpath('/html/body/form/table/tbody/tr/td[1]/div/div[5]/div/table/tbody/tr[1]/td/ul/li[5]').click()
 	time.sleep(2)
 	button = dr.find_element_by_xpath('//*[@id="RateButton"]') # 给课程打分
 	ActionChains(dr).click(button).perform() # 为什么要用actionchains模拟鼠标左键点击呢,我也不知道,我直接定位元素click不行
+	print '>>>课程已打分<<<'
 	# --------------------课程打分--------------------------
-	
-	dr.find_element_by_xpath('/html/body/form/table/tbody/tr/td[1]/div/div[4]/input').click()  # 结束
-	time.sleep(2)
-	dr.switch_to_alert().accept() # 接受弹出的对话框
 	time.sleep(2)
 	dr.get('http://www.baidu.com') # 清空页面,避免还有数据出现关不了浏览器的情况
+	time.sleep(2)
 	dr.switch_to_alert().accept()
 	time.sleep(2)
 	dr.close()
-	print '窗口已关闭...'
-	time.sleep(5)
+	print '>>>窗口已关闭<<<'
+	time.sleep(2)
 	dr.quit()
 
 if __name__ == '__main__':
 	t1 = time.time()
-	autologin()
+
+	try:
+		autologin()
+	except Exception as e:
+		print '发生了不可预计的错误,错误代码:',e
+		print '浏览器将在3s后关闭'
+		time.sleep(3)
+		dr.quit()
+
 	t2 = time.time()
 	t3 = t2 - t1
 	print '本次测试一共耗费%.2f秒' % t3
+
+
+	
