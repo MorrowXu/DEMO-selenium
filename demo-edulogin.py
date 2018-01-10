@@ -104,7 +104,7 @@ def autologin():
 	all_handles = dr.window_handles # 获得所有窗口句柄
 	dr.switch_to_window(all_handles[-1]) # 切换窗口焦点句柄到最后一个页面
 	wait.until(lambda dr: dr.find_element_by_xpath('/html/body/div[2]/form/table/tbody/tr/td[3]/div/div[2]/div[2]/div[1]/div[1]/p[2]/b/a').is_displayed())
-	course = dr.find_element_by_xpath('/html/body/div[2]/form/table/tbody/tr/td[3]/div/div[2]/div[2]/div[1]/div[2]/p[2]/b/a')
+	course = dr.find_element_by_xpath('/html/body/div[2]/form/table/tbody/tr/td[3]/div/div[2]/div[2]/div[1]/div[14]/p[2]/b/a')
 									 # /html/body/div[2]/form/table/tbody/tr/td[3]/div/div[2]/div[2]/div[1]/div[1]/p[2]/b/a
 
 	# --------------------视频时长--------------------------
@@ -147,13 +147,16 @@ def autologin():
 	print '>>>课程已打分<<<'
 	# --------------------课程打分--------------------------
 	time.sleep(2)
-	dr.get('http://www.baidu.com') # 清空页面,避免还有数据出现关不了浏览器的情况
-	time.sleep(2)
-	dr.switch_to_alert().accept()
-	time.sleep(2)
+	dr.get('http://www.163.com') # 清空页面,避免还有数据出现关不了浏览器的情况
+	try:
+		time.sleep(1)
+		dr.switch_to_alert().accept()
+		print 'alert已弹出-准备关闭'
+	except:
+		print 'alert未弹出'	
+	time.sleep(5)
 	dr.close()
-	print '>>>窗口已关闭<<<'
-	time.sleep(2)
+	time.sleep(1)
 	dr.quit()
 
 if __name__ == '__main__':
