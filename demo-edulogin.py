@@ -18,7 +18,7 @@ s = f.read()
 url = s.split(' ')[0].split('@')[1] # 链接
 username = s.split(' ')[1].split('@')[1] # 账号
 password = s.split(' ')[2].split('@')[1] # 密码
-
+f.close()
 dr = webdriver.Firefox() # 启动浏览器
 # dr = webdriver.Chrome()
 # dr.set_window_size(700,550)
