@@ -147,7 +147,7 @@ def autologin():
 	print '>>>课程已打分<<<'
 	# --------------------课程打分--------------------------
 	time.sleep(2)
-	dr.get('http://www.163.com') # 清空页面,避免还有数据出现关不了浏览器的情况
+	dr.get('about:blank') # 清空页面,避免还有数据出现关不了浏览器的情况
 	try:
 		time.sleep(1)
 		dr.switch_to_alert().accept()
